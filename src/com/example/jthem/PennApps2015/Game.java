@@ -4,12 +4,14 @@ import edu.princeton.cs.introcs.*;
 
 public class Game {
 	
-	boolean hasInitiated;
-	boolean hasStarted;
-	boolean isPaused;
-	boolean hasExited;
-	Canvas canvas;
+	private boolean hasInitiated;
+	private boolean hasStarted;
+	private boolean isPaused;
+	private boolean hasExited;
+	private Canvas canvas;
+	
 	public Player player;
+	public GameObjectList gameObjectList;
 	
 	public Game() {
 		this.hasInitiated = false;
@@ -17,7 +19,8 @@ public class Game {
 		this.isPaused = false;
 		this.hasExited = false;
 		canvas = new Canvas();
-		player = new Player(400, 400, 0, 0, 30);
+		player = new Player(400, 400, 0, 0, 30, this);
+		gameObjectList = new GameObjectList();
 	}
 	
 	public void init() {
@@ -37,9 +40,15 @@ public class Game {
         }
 		canvas.clear();
 		player.move();
+		gameObjectList.moveList();
+		gameObjectList.drawList();
 		player.draw();
 		StdDraw.show(speed);
 		
+	}
+	
+	public void setHasExited(boolean b) {
+	    hasExited = b;
 	}
 	
 	public static void main(String[] args) {

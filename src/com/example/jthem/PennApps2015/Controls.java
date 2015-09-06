@@ -9,6 +9,7 @@ public class Controls {
     private static boolean rightPressed;
     private static boolean upPressed;
     private static boolean downPressed;
+    private static boolean shootPressed;    
 
 	public static void readKey(Game game) {
 		char key = StdDraw.nextKeyTyped();
@@ -31,7 +32,7 @@ public class Controls {
 		    System.out.println("This should pause!");
 		    break;
 		case 'o':
-		    game.hasExited = true;
+		    game.setHasExited(true);
 		    break;
 		}
 	}
@@ -41,6 +42,7 @@ public class Controls {
 	    leftPressed = StdDraw.isKeyPressed(KeyEvent.VK_A);
 	    downPressed = StdDraw.isKeyPressed(KeyEvent.VK_S);
 	    rightPressed = StdDraw.isKeyPressed(KeyEvent.VK_D);
+	    shootPressed = StdDraw.isKeyPressed(KeyEvent.VK_J);
 	}
 	
 	public static boolean isMovingHorizontally() {
@@ -75,6 +77,11 @@ public class Controls {
             game.player.moveDown();
     }
 	
+	public static void checkShoot(Game game) {
+	    if (shootPressed)
+	        game.player.shoot();
+	}
+	
 	public static void checkControls(Game game) {
 	    updatePressedKeys();
 	    if(!isMovingHorizontally())
@@ -85,6 +92,7 @@ public class Controls {
 	    checkRight(game);
 	    checkUp(game);
 	    checkDown(game);
+	    checkShoot(game);
 	    
 	}
 	

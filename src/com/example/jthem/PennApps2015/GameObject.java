@@ -2,12 +2,17 @@ package com.example.jthem.PennApps2015;
 
 public class GameObject {
     
+    public final int BUFFER = 100;
+    
     public enum Tag {
         ALLY, ENEMY
     }
 
     protected int posX;
     protected int posY;
+    
+    protected double dPosX;
+    protected double dPosY;
     
     protected int velX;
     protected int velY;
@@ -21,6 +26,9 @@ public class GameObject {
     public GameObject(int pX, int pY, int vX, int vY, int r, Tag t) {
         this.posX = pX;
         this.posY = pY;
+        this.dPosX = (double) pX;
+        this.dPosY = (double) pY;
+        visible = true;
         this.r = r;
         this.velX = vX;
         this.velY = vY;
@@ -28,7 +36,8 @@ public class GameObject {
     }
     
     public boolean isVisible() {
-        return true;
+        return (posX > -BUFFER && posX < Canvas.MAX_X_RES + BUFFER) && 
+               (posY > -BUFFER && posY < Canvas.MAX_Y_RES + BUFFER);
     }
     
     public void move() {
@@ -41,8 +50,18 @@ public class GameObject {
         // by default, does nothing
     }
     
+    public void updateDoublePosition() {
+        dPosX = (double) posX;
+        dPosY = (double) posY;
+    }
+    
+    public boolean collide(GameObject other) {
+        return Math.sqrt(Math.pow(dPosX - other.dPosX, 2) + 
+                Math.pow(dPosY - other.dPosY, 2)) < (r + other.r);
+    }
+    
     public void draw() {
-        
+     // by default, does nothing
     }
     
     public int getPosX() {

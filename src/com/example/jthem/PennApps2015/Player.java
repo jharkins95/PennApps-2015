@@ -10,8 +10,11 @@ public class Player extends GameObject {
     
     private int borderR = r + 10;
     
-    public Player(int pX, int pY, int vX, int vY, int r) {
+    private Game game;
+    
+    public Player(int pX, int pY, int vX, int vY, int r, Game game) {
         super(pX, pY, vX, vY, r, Tag.ALLY);
+        this.game = game;
         // TODO Auto-generated constructor stub
     }
     
@@ -37,6 +40,14 @@ public class Player extends GameObject {
     
     public void stopY() {
         velY = 0;
+    }
+    
+    public void shoot() {
+        game.gameObjectList.add(new Bullet(posX - 10, posY, 0, 10, 5, 
+                Tag.ALLY));
+
+        game.gameObjectList.add(new Bullet(posX + 10, posY, 0, 10, 5, 
+                Tag.ALLY));
     }
     
     @Override
