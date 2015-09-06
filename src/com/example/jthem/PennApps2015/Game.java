@@ -29,12 +29,9 @@ public class Game {
 		if (!this.hasInitiated) {
 			this.init();
 		}
-		if (!Controls.isMovingHorizontally()) {
-            this.player.stopX();
-        }
-        if (!Controls.isMovingVertically()) {
-            this.player.stopY();
-        }
+		
+        Controls.checkControls(this);
+        
 		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
         }
@@ -58,6 +55,7 @@ public class Game {
 		}
 		while (!game.hasExited)
 		    game.loop(speed);
+		System.exit(0);
 	}
 
 }
