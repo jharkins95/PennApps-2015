@@ -46,10 +46,10 @@ public class Player extends GameObject {
     }
     
     public void shoot() {
-        game.gameObjectList.add(new Bullet(posX - 10, posY, 0, 10, 5, 
+        game.bulletList.add(new Bullet(posX - 10, posY, 0, 10, 5, 
                 Tag.ALLY));
 
-        game.gameObjectList.add(new Bullet(posX + 10, posY, 0, 10, 5, 
+        game.bulletList.add(new Bullet(posX + 10, posY, 0, 10, 5, 
                 Tag.ALLY));
     }
     

@@ -7,12 +7,15 @@ public class Enemy extends GameObject {
 	protected boolean alive;
 	protected int hp;
     private double borderR = r + 10;
+    private Player player;
     
     static final double BASE_VEL = 1;
 	
-	public Enemy(double pX, double pY, double vX, double vY, double r, int hp) {
+	public Enemy(double pX, double pY, double vX, double vY, double r, int hp, Player player) {
 		super(pX, pY, vX, vY, r, Tag.ENEMY);
 		this.hp = hp;
+		this.alive = true;
+		this.player = player;
 	}
 	
 	public void seek(Player player) {
@@ -34,24 +37,16 @@ public class Enemy extends GameObject {
 	}
 	
 	@Override
-	public void clip() {
-        // check if player is not leaving playing field
-        // if so, put them back in playing field
-        if (posX - borderR < 0)
-            posX = borderR;
-        else if (posX + borderR > Canvas.MAX_X_RES)
-            posX = Canvas.MAX_X_RES - borderR;
-        
-        if (posY - borderR < 0)
-            posY = borderR;
-        else if (posY + borderR > Canvas.MAX_Y_RES)
-            posY = Canvas.MAX_Y_RES - borderR;
-    }
+	public void move() {
+		seek(player);
+		super.move();
+	}
 	
     @Override
     public void draw() {
         StdDraw.setPenColor(StdDraw.RED);
         StdDraw.filledCircle(posX, posY, r);
+        System.out.println("enemy drawn!");
     }
     
     public void injure(int amount) {

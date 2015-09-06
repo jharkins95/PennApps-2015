@@ -12,7 +12,8 @@ public class Game {
 	
 	public Player player;
 	public Enemy enemy;
-	public GameObjectList gameObjectList;
+	public GameObjectList bulletList;
+	public GameObjectList enemyList;
 	
 	public Game() {
 		this.initiated = false;
@@ -21,12 +22,16 @@ public class Game {
 		this.exited = false;
 		canvas = new Canvas();
 		player = new Player(400, 400, 0, 0, 30, this);
-		enemy = new Enemy(700, 700, 0, 0, 30, 100);
-		gameObjectList = new GameObjectList();
+		enemyList = new GameObjectList();
+		bulletList = new GameObjectList();
 	}
 	
 	public void init() {
 		canvas.init();
+		for (int i = 0; i < 5; i++) {
+			enemyList.add(new Enemy(i * 100 + 100, 500, 0, 0, 30, 100, player));
+		}
+		
 		this.initiated = true;
 	}
 
@@ -45,20 +50,20 @@ public class Game {
 		}
 		canvas.clear();
 		player.move();
-		gameObjectList.moveList();
-		gameObjectList.drawList();
+		bulletList.moveList();
+		enemyList.moveList();
+		bulletList.checkCollisions(enemyList);
+		enemyList.checkCollisions(player);
+		
 		player.draw();
-		if (!enemy.collide(player)) {
-			enemy.seek(player);
-		} else {
-			player.kill();
-		}
+
 		if (player.getLives() < 1) {
 			this.setHasExited(true);
 		}
+		
+		bulletList.drawList();
+		enemyList.drawList();
 
-		enemy.move();
-		enemy.draw();
 		StdDraw.show(speed);
 		
 	}

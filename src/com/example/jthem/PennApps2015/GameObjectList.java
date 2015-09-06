@@ -45,6 +45,7 @@ public class GameObjectList {
                 if (hereObj.collide(otherObj)) {
                     here.remove();
                     other.remove();
+                    break;
                     // TODO: do death animations stuff?
                 }
             }
@@ -60,5 +61,9 @@ public class GameObjectList {
                 pl.kill();
             }
         }
+    }
+    
+    public int size() {
+    	return list.size();
     }
 }
