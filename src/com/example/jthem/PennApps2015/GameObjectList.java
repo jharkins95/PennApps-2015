@@ -16,11 +16,6 @@ public class GameObjectList {
     }
     
     public void drawList() {
-        /*
-        Iterator<GameObject> iter = list.listIterator();
-        while (iter.hasNext()) {
-            iter.next().draw();
-        }*/
         for (GameObject go : list)
             go.draw();
     }
@@ -34,5 +29,36 @@ public class GameObjectList {
                 iter.remove();
         }
     }
-
+    
+    public Iterator<GameObject> getIterator() {
+        return list.listIterator();
+    }
+    
+    // supposed to be used from player bullets list with enemy list as argument
+    public void checkCollisions(GameObjectList gol) {
+        Iterator<GameObject> here = list.listIterator();
+        while (here.hasNext()) {
+            GameObject hereObj = here.next();
+            Iterator<GameObject> other = gol.getIterator();
+            while (other.hasNext()) {
+                GameObject otherObj = other.next();
+                if (hereObj.collide(otherObj)) {
+                    here.remove();
+                    other.remove();
+                    // TODO: do death animations stuff?
+                }
+            }
+        }
+    }
+    
+    // supposed to be used from an enemy list with the player as an argument
+    public void checkCollisions(Player pl) {
+        Iterator<GameObject> here = list.listIterator();
+        while (here.hasNext()) {
+            // if an enemy collides with player
+            if (here.next().collide(pl)) {
+                pl.kill();
+            }
+        }
+    }
 }
