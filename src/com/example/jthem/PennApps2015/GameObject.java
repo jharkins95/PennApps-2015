@@ -33,6 +33,11 @@ public class GameObject {
     public void move() {
         posX += velX;
         posY += velY;
+        clip();
+    }
+    
+    public void clip() {
+        // by default, does nothing
     }
     
     public void draw() {
