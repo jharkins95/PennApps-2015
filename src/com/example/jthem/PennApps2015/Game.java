@@ -8,22 +8,19 @@ public class Game {
 	boolean hasStarted;
 	boolean isPaused;
 	boolean hasExited;
-	
-	static final int MAX_X_RES = 800;
-	static final int MAX_Y_RES = 600;
+	Canvas canvas;
 	
 	public Game() {
 		this.hasInitiated = false;
 		this.hasStarted = false;
 		this.isPaused = false;
 		this.hasExited = false;
+		canvas = new Canvas();
 	}
 	
 	public void init() {
 		StdDraw.setPenColor(StdDraw.BLACK);
-		StdDraw.setCanvasSize(MAX_X_RES, MAX_Y_RES);
-		StdDraw.setXscale(0, MAX_X_RES);
-		StdDraw.setYscale(0, MAX_Y_RES);
+		canvas.init();
 		this.hasInitiated = true;
 	}
 
