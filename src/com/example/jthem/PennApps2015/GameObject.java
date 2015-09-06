@@ -18,9 +18,10 @@ public class GameObject {
     
     protected boolean visible;
     
-    public GameObject(int pX, int pY, int vX, int vY, Tag t) {
+    public GameObject(int pX, int pY, int vX, int vY, int r, Tag t) {
         this.posX = pX;
         this.posY = pY;
+        this.r = r;
         this.velX = vX;
         this.velY = vY;
         this.tag = t;

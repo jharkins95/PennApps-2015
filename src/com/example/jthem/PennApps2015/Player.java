@@ -10,8 +10,8 @@ public class Player extends GameObject {
     
     private int borderR = r + 20;
     
-    public Player(int pX, int pY, int vX, int vY) {
-        super(pX, pY, vX, vY, Tag.ALLY);
+    public Player(int pX, int pY, int vX, int vY, int r) {
+        super(pX, pY, vX, vY, r, Tag.ALLY);
         // TODO Auto-generated constructor stub
     }
     
@@ -37,13 +37,13 @@ public class Player extends GameObject {
         // if so, put them back in playing field
         if (posX - borderR < 0)
             posX = borderR;
-        else if (posX + borderR > Game.MAX_X_RES)
-            posX = Game.MAX_X_RES - borderR;
+        else if (posX + borderR > Canvas.MAX_X_RES)
+            posX = Canvas.MAX_X_RES - borderR;
         
         if (posY - borderR < 0)
             posY = borderR;
-        else if (posY + borderR > Game.MAX_Y_RES)
-            posY = Game.MAX_Y_RES - borderR;
+        else if (posY + borderR > Canvas.MAX_Y_RES)
+            posY = Canvas.MAX_Y_RES - borderR;
     }
     
     @Override

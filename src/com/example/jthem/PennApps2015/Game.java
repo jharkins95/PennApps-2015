@@ -9,6 +9,7 @@ public class Game {
 	boolean isPaused;
 	boolean hasExited;
 	Canvas canvas;
+	public Player player;
 	
 	public Game() {
 		this.hasInitiated = false;
@@ -22,16 +23,21 @@ public class Game {
 		StdDraw.setPenColor(StdDraw.BLACK);
 		canvas.init();
 		this.hasInitiated = true;
+		player = new Player(400, 400, 0, 0, 40);
 	}
 
 	public void loop(int speed) {
-		while (!this.hasExited) {
-			if (!this.hasInitiated) {
-				this.init();
-			}
-			StdDraw.rectangle(100, 100, 50, 50);
-			StdDraw.show(speed);
+		if (!this.hasInitiated) {
+			this.init();
 		}
+		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
+            Controls.readKey(this);
+        }
+		player.move();
+		StdDraw.rectangle(100, 100, 50, 50);
+		player.draw();
+		StdDraw.show(speed);
+		
 	}
 	
 	public static void main(String[] args) {
@@ -45,7 +51,8 @@ public class Game {
 			speed = 10;
 			System.out.println("no speed provided; defaulting to " + speed);
 		}
-		game.loop(speed);;
+		while (!game.hasExited)
+		    game.loop(speed);
 	}
 
 }
