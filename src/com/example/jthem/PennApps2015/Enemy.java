@@ -4,7 +4,7 @@ import edu.princeton.cs.introcs.StdDraw;
 
 public class Enemy extends GameObject {
 
-	protected boolean isAlive;
+	protected boolean alive;
 	protected int hp;
     private double borderR = r + 10;
     
@@ -62,8 +62,13 @@ public class Enemy extends GameObject {
     	hp += amount;
     }
     
+    @Override
+    public boolean isVisible() {
+        return super.isVisible() && alive;
+    }
+    
     public void kill() {
-    	isAlive = false;
+    	alive = false;
     }
 	
 }
