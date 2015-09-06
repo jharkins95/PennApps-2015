@@ -26,4 +26,8 @@ public class Canvas {
 		StdDraw.setYscale(0, MAX_Y_RES);
 	}
 	
+	public void clear() {
+		StdDraw.clear();
+	}
+	
 }
