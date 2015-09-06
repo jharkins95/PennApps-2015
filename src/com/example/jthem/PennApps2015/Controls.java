@@ -1,6 +1,7 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.StdDraw;
+import java.awt.event.KeyEvent;
 
 public class Controls {
 	public static void readKey(Game game) {
@@ -21,4 +22,14 @@ public class Controls {
 			break;
 		}
 	}
+	
+	public static boolean isMovingHorizontally() {
+	    return (StdDraw.isKeyPressed(KeyEvent.VK_A) || 
+	            StdDraw.isKeyPressed(KeyEvent.VK_D));
+	}
+	
+	public static boolean isMovingVertically() {
+        return (StdDraw.isKeyPressed(KeyEvent.VK_W) || 
+                StdDraw.isKeyPressed(KeyEvent.VK_S));
+    }
 }

@@ -16,19 +16,27 @@ public class Player extends GameObject {
     }
     
     public void moveLeft() {
-        velX -= MOVE_INC;
+        velX = -MOVE_INC;
     }
     
     public void moveRight() {
-        velX += MOVE_INC;
+        velX = MOVE_INC;
     }
     
     public void moveUp() {
-        velY += MOVE_INC;
+        velY = MOVE_INC;
     }
     
     public void moveDown() {
-        velY -= MOVE_INC;
+        velY = -MOVE_INC;
+    }
+    
+    public void stopX() {
+        velX = 0;
+    }
+    
+    public void stopY() {
+        velY = 0;
     }
     
     @Override
