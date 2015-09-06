@@ -6,13 +6,13 @@ import edu.princeton.cs.introcs.*;
 
 public class Player extends GameObject {
 
-    private int MOVE_INC = 5;
+    private double MOVE_INC = 5.0;
     
-    private int borderR = r + 10;
+    private double borderR = r + 10.0;
     
     private Game game;
     
-    public Player(int pX, int pY, int vX, int vY, int r, Game game) {
+    public Player(double pX, double pY, double vX, double vY, double r, Game game) {
         super(pX, pY, vX, vY, r, Tag.ALLY);
         this.game = game;
         // TODO Auto-generated constructor stub
@@ -68,7 +68,7 @@ public class Player extends GameObject {
     @Override
     public void draw() {
         StdDraw.setPenColor(StdDraw.GREEN);
-        StdDraw.filledCircle((double) posX, (double) posY, (double) r);
+        StdDraw.filledCircle(posX, posY, r);
     }
 
 }
