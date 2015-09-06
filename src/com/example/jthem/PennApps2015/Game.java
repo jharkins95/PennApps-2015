@@ -17,23 +17,26 @@ public class Game {
 		this.isPaused = false;
 		this.hasExited = false;
 		canvas = new Canvas();
+		player = new Player(400, 400, 0, 0, 30);
 	}
 	
 	public void init() {
 		canvas.init();
 		this.hasInitiated = true;
-		player = new Player(400, 400, 0, 0, 40);
 	}
 
 	public void loop(int speed) {
 		if (!this.hasInitiated) {
 			this.init();
 		}
+		if (!Controls.isMovingHorizontally()) {
+            this.player.stopX();
+        }
+        if (!Controls.isMovingVertically()) {
+            this.player.stopY();
+        }
 		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
-        } else {
-        	player.velX = 0;
-        	player.velY = 0;
         }
 		canvas.clear();
 		player.move();

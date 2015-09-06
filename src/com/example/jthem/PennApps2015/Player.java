@@ -6,9 +6,9 @@ import edu.princeton.cs.introcs.*;
 
 public class Player extends GameObject {
 
-    private int MOVE_INC = 10;
+    private int MOVE_INC = 5;
     
-    private int borderR = r + 20;
+    private int borderR = r + 10;
     
     public Player(int pX, int pY, int vX, int vY, int r) {
         super(pX, pY, vX, vY, r, Tag.ALLY);
