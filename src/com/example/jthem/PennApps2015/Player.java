@@ -7,14 +7,17 @@ import edu.princeton.cs.introcs.*;
 public class Player extends GameObject {
 
     private double MOVE_INC = 5.0;
-    
+    private boolean alive;
     private double borderR = r + 10.0;
+    private int lives;
     
     private Game game;
     
     public Player(double pX, double pY, double vX, double vY, double r, Game game) {
         super(pX, pY, vX, vY, r, Tag.ALLY);
         this.game = game;
+        this.alive = true;
+        this.lives = 5;
         // TODO Auto-generated constructor stub
     }
     
@@ -69,6 +72,17 @@ public class Player extends GameObject {
     public void draw() {
         StdDraw.setPenColor(StdDraw.GREEN);
         StdDraw.filledCircle(posX, posY, r);
+    }
+    
+    public void kill() {
+    	this.alive = false;
+    	this.lives--;
+    	this.posX = 400;
+    	this.posY = 100;
+    }
+    
+    public int getLives() {
+    	return this.lives;
     }
 
 }

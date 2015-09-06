@@ -4,10 +4,10 @@ import edu.princeton.cs.introcs.*;
 
 public class Game {
 	
-	private boolean hasInitiated;
-	private boolean hasStarted;
-	private boolean isPaused;
-	private boolean hasExited;
+	private boolean initiated;
+	private boolean started;
+	private boolean paused;
+	private boolean exited;
 	private Canvas canvas;
 	
 	public Player player;
@@ -15,10 +15,10 @@ public class Game {
 	public GameObjectList gameObjectList;
 	
 	public Game() {
-		this.hasInitiated = false;
-		this.hasStarted = false;
-		this.isPaused = false;
-		this.hasExited = false;
+		this.initiated = false;
+		this.started = false;
+		this.paused = false;
+		this.exited = false;
 		canvas = new Canvas();
 		player = new Player(400, 400, 0, 0, 30, this);
 		enemy = new Enemy(700, 700, 0, 0, 30, 100);
@@ -27,11 +27,11 @@ public class Game {
 	
 	public void init() {
 		canvas.init();
-		this.hasInitiated = true;
+		this.initiated = true;
 	}
 
 	public void loop(int speed) {
-		if (!this.hasInitiated) {
+		if (!this.initiated) {
 			this.init();
 		}
 		
@@ -40,21 +40,23 @@ public class Game {
 		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
         }
+		if (this.paused) {
+			return;
+		}
 		canvas.clear();
 		player.move();
 		gameObjectList.moveList();
 		gameObjectList.drawList();
 		player.draw();
 		if (!enemy.collide(player)) {
-			System.out.println(enemy.collide(player));
 			enemy.seek(player);
 		} else {
-			enemy.velX = 0;
-			enemy.velY = 0;
+			player.kill();
 		}
-		//for (GameObject g : gameObjectList) {
-		//	;
-		//}
+		if (player.getLives() < 1) {
+			this.setHasExited(true);
+		}
+
 		enemy.move();
 		enemy.draw();
 		StdDraw.show(speed);
@@ -62,7 +64,15 @@ public class Game {
 	}
 	
 	public void setHasExited(boolean b) {
-	    hasExited = b;
+	    exited = b;
+	}
+	
+	public void setPaused(boolean b) {
+		paused = b;
+	}
+	
+	public boolean isPaused() {
+		return paused;
 	}
 	
 	public static void main(String[] args) {
@@ -76,7 +86,7 @@ public class Game {
 			speed = 10;
 			System.out.println("no speed provided; defaulting to " + speed);
 		}
-		while (!game.hasExited)
+		while (!game.exited)
 		    game.loop(speed);
 		System.exit(0);
 	}

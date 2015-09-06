@@ -29,7 +29,7 @@ public class Controls {
 			break;
 		*/
 		case 'p':
-		    System.out.println("This should pause!");
+		    game.setPaused(!game.isPaused());
 		    break;
 		case 'o':
 		    game.setHasExited(true);
