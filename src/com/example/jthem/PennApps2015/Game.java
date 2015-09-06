@@ -20,7 +20,6 @@ public class Game {
 	}
 	
 	public void init() {
-		StdDraw.setPenColor(StdDraw.BLACK);
 		canvas.init();
 		this.hasInitiated = true;
 		player = new Player(400, 400, 0, 0, 40);
@@ -32,9 +31,12 @@ public class Game {
 		}
 		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
+        } else {
+        	player.velX = 0;
+        	player.velY = 0;
         }
+		canvas.clear();
 		player.move();
-		StdDraw.rectangle(100, 100, 50, 50);
 		player.draw();
 		StdDraw.show(speed);
 		
