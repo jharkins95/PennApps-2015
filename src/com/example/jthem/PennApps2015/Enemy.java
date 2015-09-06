@@ -51,7 +51,7 @@ public class Enemy extends GameObject {
     @Override
     public void draw() {
         StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.filledCircle((double) posX, (double) posY, (double) r);
+        StdDraw.filledCircle(posX, posY, r);
     }
     
     public void injure(int amount) {
