@@ -4,7 +4,7 @@ import edu.princeton.cs.introcs.StdDraw;
 
 public class Bullet extends GameObject {
 
-    public Bullet(int pX, int pY, int vX, int vY, int r, Tag t) {
+    public Bullet(double pX, double pY, double vX, double vY, int r, Tag t) {
         super(pX, pY, vX, vY, r, t);
         // TODO Auto-generated constructor stub
     }
