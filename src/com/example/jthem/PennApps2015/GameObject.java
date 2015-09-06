@@ -8,26 +8,21 @@ public class GameObject {
         ALLY, ENEMY
     }
 
-    protected int posX;
-    protected int posY;
+    protected double posX;
+    protected double posY;
     
-    protected double dPosX;
-    protected double dPosY;
+    protected double velX;
+    protected double velY;
     
-    protected int velX;
-    protected int velY;
-    
-    protected int r; // radius
+    protected double r; // radius
     
     protected Tag tag;
     
     protected boolean visible;
     
-    public GameObject(int pX, int pY, int vX, int vY, int r, Tag t) {
+    public GameObject(double pX, double pY, double vX, double vY, double r, Tag t) {
         this.posX = pX;
         this.posY = pY;
-        this.dPosX = (double) pX;
-        this.dPosY = (double) pY;
         visible = true;
         this.r = r;
         this.velX = vX;
@@ -50,33 +45,28 @@ public class GameObject {
         // by default, does nothing
     }
     
-    public void updateDoublePosition() {
-        dPosX = (double) posX;
-        dPosY = (double) posY;
-    }
-    
     public boolean collide(GameObject other) {
-        return Math.sqrt(Math.pow(dPosX - other.dPosX, 2) + 
-                Math.pow(dPosY - other.dPosY, 2)) < (r + other.r);
+        return Math.sqrt(Math.pow(posX - other.posX, 2) + 
+                Math.pow(posY - other.posY, 2)) < (r + other.r);
     }
     
     public void draw() {
      // by default, does nothing
     }
     
-    public int getPosX() {
+    public double getPosX() {
         return posX;
     }
     
-    public int getPosY() {
+    public double getPosY() {
         return posY;
     }
     
-    public int getVelX() {
+    public double getVelX() {
         return velX;
     }
     
-    public int getVelY() {
+    public double getVelY() {
         return velY;
     }
 

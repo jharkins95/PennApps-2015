@@ -11,6 +11,7 @@ public class Game {
 	private Canvas canvas;
 	
 	public Player player;
+	public Enemy enemy;
 	public GameObjectList gameObjectList;
 	
 	public Game() {
@@ -20,6 +21,7 @@ public class Game {
 		this.hasExited = false;
 		canvas = new Canvas();
 		player = new Player(400, 400, 0, 0, 30, this);
+		enemy = new Enemy(700, 700, 0, 0, 30, 100);
 		gameObjectList = new GameObjectList();
 	}
 	
@@ -43,6 +45,18 @@ public class Game {
 		gameObjectList.moveList();
 		gameObjectList.drawList();
 		player.draw();
+		if (!enemy.collide(player)) {
+			System.out.println(enemy.collide(player));
+			enemy.seek(player);
+		} else {
+			enemy.velX = 0;
+			enemy.velY = 0;
+		}
+		//for (GameObject g : gameObjectList) {
+		//	;
+		//}
+		enemy.move();
+		enemy.draw();
 		StdDraw.show(speed);
 		
 	}
