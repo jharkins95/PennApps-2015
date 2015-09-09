@@ -1,24 +1,29 @@
 package com.example.jthem.PennApps2015;
 
 import java.awt.Color;
-import java.awt.Font;
 import edu.princeton.cs.introcs.*;
+import java.awt.Font;
 
 public class Player extends GameObject {
 
-    private double MOVE_INC = 5.0;
+    private static final double MOVE_INC = 5.0;
     private boolean alive;
+    private boolean immune;
     private double borderR = r + 10.0;
     private int lives;
     
     private Game game;
+	public GameTimer playerTimer;
     
     public Player(double pX, double pY, double vX, double vY, double r, Game game) {
         super(pX, pY, vX, vY, r, Tag.ALLY);
         this.game = game;
+        this.immune = true;
         this.alive = true;
         this.lives = 5;
-        // TODO Auto-generated constructor stub
+		playerTimer = new GameTimer();
+		playerTimer.setCurrentTime();
+		playerTimer.setMarker(playerTimer.getTime());
     }
     
     public void moveLeft() {
@@ -46,10 +51,11 @@ public class Player extends GameObject {
     }
     
     public void shoot() {
-        game.bulletList.add(new Bullet(posX - 10, posY, 0, 10, 5, 
+    	Color color = Color.CYAN;
+        game.playerBulletList.add(new Bullet(posX - 10, posY, 0, 10, 5, color,
                 Tag.ALLY));
 
-        game.bulletList.add(new Bullet(posX + 10, posY, 0, 10, 5, 
+        game.playerBulletList.add(new Bullet(posX + 10, posY, 0, 10, 5, color,
                 Tag.ALLY));
     }
     
@@ -70,19 +76,38 @@ public class Player extends GameObject {
     
     @Override
     public void draw() {
-        StdDraw.setPenColor(StdDraw.GREEN);
+        StdDraw.setPenColor(Color.GREEN);
         StdDraw.filledCircle(posX, posY, r);
+        if (immune) {
+        	StdDraw.setPenColor(Color.BLACK);
+        	StdDraw.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
+        	StdDraw.text(posX, posY, "I");
+        }
     }
     
     public void kill() {
-    	this.alive = false;
-    	this.lives--;
-    	this.posX = 400;
-    	this.posY = 100;
+    	alive = false;
+    	immune = true;
+    	lives--;
+   		posX = 400;
+       	posY = 100;
+       	playerTimer.setMarker(playerTimer.getTime());
+    }
+    
+    public boolean isAlive() {
+    	return alive;
+    }
+    
+    public boolean isImmune() {
+    	return immune;
+    }
+    
+    public void makeVulnerable() {
+    	immune = false;
     }
     
     public int getLives() {
-    	return this.lives;
+    	return lives;
     }
 
 }

@@ -7,8 +7,8 @@ public class Canvas {
 	static final int MAX_X_RES = 800;
 	static final int MAX_Y_RES = 600;
 	
-	int resX;
-	int resY;
+	private int resX;
+	private int resY;
 	
 	public Canvas() {
 		this.resX = MAX_X_RES;
@@ -21,13 +21,17 @@ public class Canvas {
 	}
 	
 	public void init() {
-		StdDraw.setCanvasSize(MAX_X_RES, MAX_Y_RES);
-		StdDraw.setXscale(0, MAX_X_RES);
-		StdDraw.setYscale(0, MAX_Y_RES);
+		StdDraw.setCanvasSize(resX, resY);
+		StdDraw.setXscale(0, resX);
+		StdDraw.setYscale(0, resY);
 	}
 	
 	public void clear() {
-		StdDraw.clear();
+		StdDraw.clear(StdDraw.BLACK);
+	}
+	
+	public void animate(int speed) {
+		StdDraw.show(speed);
 	}
 	
 }

@@ -1,19 +1,21 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.StdDraw;
+import java.awt.Color;
 
 public class Enemy extends GameObject {
 
 	protected boolean alive;
 	protected int hp;
-    private double borderR = r + 10;
     private Player player;
     
-    static final double BASE_VEL = 1;
+    static final double BASE_VEL = 2;
+    
+    private Game game;
 	
-	public Enemy(double pX, double pY, double vX, double vY, double r, int hp, Player player) {
+	public Enemy(double pX, double pY, double vX, double vY, double r, Game game, Player player) {
 		super(pX, pY, vX, vY, r, Tag.ENEMY);
-		this.hp = hp;
+		this.game = game;
 		this.alive = true;
 		this.player = player;
 	}
@@ -42,11 +44,19 @@ public class Enemy extends GameObject {
 		super.move();
 	}
 	
+	public void shoot() {
+		Color color = Color.ORANGE;
+        game.enemyBulletList.add(new Bullet(posX - 10, posY, 0, -10, 5, color,
+                Tag.ENEMY));
+
+        game.enemyBulletList.add(new Bullet(posX + 10, posY, 0, -10, 5, color,
+                Tag.ENEMY));
+    }
+	
     @Override
     public void draw() {
-        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.setPenColor(Color.RED);
         StdDraw.filledCircle(posX, posY, r);
-        System.out.println("enemy drawn!");
     }
     
     public void injure(int amount) {

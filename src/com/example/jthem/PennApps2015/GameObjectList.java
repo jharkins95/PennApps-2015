@@ -11,6 +11,11 @@ public class GameObjectList {
         list = new ArrayList<GameObject>();
     }
     
+    public GameObjectList(GameObject obj) {
+    	list = new ArrayList<GameObject>();
+    	list.add(obj);
+    }
+    
     public void add(GameObject go) {
         list.add(go);
     }
@@ -53,14 +58,20 @@ public class GameObjectList {
     }
     
     // supposed to be used from an enemy list with the player as an argument
-    public void checkCollisions(Player pl) {
+    public boolean checkCollisions(Player pl) {
         Iterator<GameObject> here = list.listIterator();
         while (here.hasNext()) {
             // if an enemy collides with player
-            if (here.next().collide(pl)) {
+            if (here.next().collide(pl) && !pl.isImmune()) {
                 pl.kill();
+                return true;
             }
         }
+        return false;
+    }
+    
+    public ArrayList<GameObject> getList() {
+    	return list;
     }
     
     public int size() {

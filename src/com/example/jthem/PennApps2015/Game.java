@@ -1,43 +1,54 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.*;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
 
 public class Game {
 	
 	private boolean initiated;
-	private boolean started;
 	private boolean paused;
 	private boolean exited;
 	private Canvas canvas;
-	
 	public Player player;
 	public Enemy enemy;
-	public GameObjectList bulletList;
+	public GameObjectList playerBulletList;
+	public GameObjectList enemyBulletList;
 	public GameObjectList enemyList;
+	private GameTimer enemyTimer;
 	
 	public Game() {
 		this.initiated = false;
-		this.started = false;
 		this.paused = false;
 		this.exited = false;
 		canvas = new Canvas();
 		player = new Player(400, 400, 0, 0, 30, this);
 		enemyList = new GameObjectList();
-		bulletList = new GameObjectList();
+		playerBulletList = new GameObjectList();
+		enemyBulletList = new GameObjectList();
+		enemyTimer = new GameTimer();
+		
 	}
 	
 	public void init() {
 		canvas.init();
 		for (int i = 0; i < 5; i++) {
-			enemyList.add(new Enemy(i * 100 + 100, 500, 0, 0, 30, 100, player));
+			enemyList.add(new Enemy(i * 100 + 100, 700, 0, 0, 30, this, player));
 		}
 		
 		this.initiated = true;
 	}
 
 	public void loop(int speed) {
+		enemyTimer.setCurrentTime();
+		player.playerTimer.setCurrentTime();
 		if (!this.initiated) {
 			this.init();
+		}
+		if (player.getLives() < 1) {
+			JOptionPane.showMessageDialog(null, "You are out of lives! Game over!",
+					"Game over!", JOptionPane.ERROR_MESSAGE);
+			this.setHasExited(true);
 		}
 		
         Controls.checkControls(this);
@@ -48,23 +59,43 @@ public class Game {
 		if (this.paused) {
 			return;
 		}
-		canvas.clear();
-		player.move();
-		bulletList.moveList();
-		enemyList.moveList();
-		bulletList.checkCollisions(enemyList);
-		enemyList.checkCollisions(player);
 		
-		player.draw();
-
-		if (player.getLives() < 1) {
-			this.setHasExited(true);
+		if (enemyTimer.cmpMarkerCurrent() >= 1000) {
+			enemyList.add(new Enemy(400, 700, 0, 0, 30, this, player));
+			enemyTimer.setMarker(enemyTimer.getTime());
 		}
 		
-		bulletList.drawList();
+		if (player.isImmune() && player.playerTimer.cmpMarkerCurrent() >= 3000) {
+			player.makeVulnerable();
+		}
+		
+		canvas.clear();
+		player.move();
+		playerBulletList.moveList();
+		enemyBulletList.moveList();
+		enemyList.moveList();
+		
+		playerBulletList.checkCollisions(enemyList);
+		enemyBulletList.checkCollisions(player);
+		enemyList.checkCollisions(player);
+		
+		Iterator<GameObject> iter = enemyList.getList().listIterator();
+		while(iter.hasNext()) {
+			Enemy enemy = (Enemy) iter.next();
+			double epsilon = 10;
+			if (player.getPosX() <= enemy.getPosX() + epsilon &&
+				player.getPosX() >= enemy.getPosX() - epsilon &&
+				player.getPosY() <= enemy.getPosY()) {
+				enemy.shoot();
+			}
+		}
+		
+		playerBulletList.drawList();
+		enemyBulletList.drawList();
 		enemyList.drawList();
+		player.draw();
 
-		StdDraw.show(speed);
+		canvas.animate(speed);
 		
 	}
 	
@@ -91,8 +122,9 @@ public class Game {
 			speed = 10;
 			System.out.println("no speed provided; defaulting to " + speed);
 		}
-		while (!game.exited)
+		while (!game.exited) {
 		    game.loop(speed);
+		}
 		System.exit(0);
 	}
 

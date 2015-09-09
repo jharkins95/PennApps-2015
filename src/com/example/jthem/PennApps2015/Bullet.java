@@ -1,17 +1,20 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.StdDraw;
+import java.awt.Color;
 
 public class Bullet extends GameObject {
 
-    public Bullet(double pX, double pY, double vX, double vY, int r, Tag t) {
+	private Color color;
+	
+    public Bullet(double pX, double pY, double vX, double vY, int r, Color color, Tag t) {
         super(pX, pY, vX, vY, r, t);
-        // TODO Auto-generated constructor stub
+        this.color = color;
     }
     
     @Override
     public void draw() {
-        StdDraw.setPenColor(StdDraw.YELLOW);
+        StdDraw.setPenColor(color);
         StdDraw.filledCircle(posX, posY, r);
     }
 
