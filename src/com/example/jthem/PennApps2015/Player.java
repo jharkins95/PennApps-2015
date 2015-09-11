@@ -100,7 +100,8 @@ public class Player extends GameObject {
         }
         else {
             if (!alive) {
-                StdDraw.setPenColor(Color.PINK);
+                float deathAnimColor = (float) deathAnimCounter/DEATH_ANIM_COUNTER_MAX;                
+                StdDraw.setPenColor(new Color(deathAnimColor,1.0f,deathAnimColor));
                 deathAnimCounter++;
                 if(deathAnimCounter > DEATH_ANIM_COUNTER_MAX) {
                     deathAnimCounter = 0;
