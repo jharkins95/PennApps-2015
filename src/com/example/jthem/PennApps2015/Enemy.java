@@ -21,8 +21,8 @@ public class Enemy extends GameObject {
 	}
 	
 	private void seekAdv(Player player) {
-		velX = BASE_VEL * (player.posX - posX) / posX;
-		velY = BASE_VEL * (player.posY - posY) / posY;
+		velX = BASE_VEL * (player.posX - posX) / Canvas.MAX_X_RES;
+		velY = BASE_VEL * (player.posY - posY) / Canvas.MAX_Y_RES;
 	}
 	
 	public void seek(Player player) {
@@ -53,10 +53,10 @@ public class Enemy extends GameObject {
 	public void shoot() {
 		Color color = Color.ORANGE;
         game.enemyBulletList.add(new Bullet(posX - 10, posY, 0, -10, 5, color,
-                Tag.ENEMY));
+                player, Tag.ENEMY));
 
         game.enemyBulletList.add(new Bullet(posX + 10, posY, 0, -10, 5, color,
-                Tag.ENEMY));
+                player, Tag.ENEMY));
     }
 	
     @Override
