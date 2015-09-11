@@ -6,6 +6,9 @@ import javax.swing.JOptionPane;
 
 public class Game {
 	
+    public static final double PLAYER_SPAWN_X = 400;
+    public static final double PLAYER_SPAWN_Y = 100;
+    
 	private boolean initiated;
 	private boolean paused;
 	private boolean exited;
@@ -22,7 +25,7 @@ public class Game {
 		this.paused = false;
 		this.exited = false;
 		canvas = new Canvas();
-		player = new Player(400, 400, 0, 0, 30, this);
+		player = new Player(PLAYER_SPAWN_X, PLAYER_SPAWN_Y, 0, 0, 30, this);
 		enemyList = new GameObjectList();
 		playerBulletList = new GameObjectList();
 		enemyBulletList = new GameObjectList();
@@ -65,9 +68,7 @@ public class Game {
 			enemyTimer.setMarker(enemyTimer.getTime());
 		}
 		
-		if (player.isImmune() && player.playerTimer.cmpMarkerCurrent() >= 3000) {
-			player.makeVulnerable();
-		}
+		player.checkVulnerability();
 		
 		canvas.clear();
 		player.move();

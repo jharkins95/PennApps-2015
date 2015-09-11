@@ -70,16 +70,21 @@ public class Controls {
 	
 	public static void checkControls(Game game) {
 	    updatePressedKeys();
-	    if(!isMovingHorizontally())
+	    if (!game.player.isAlive()) {
 	        game.player.stopX();
-	    if(!isMovingVertically())
 	        game.player.stopY();
-	    checkLeft(game);
-	    checkRight(game);
-	    checkUp(game);
-	    checkDown(game);
-	    checkShoot(game);
-	    
+	    }
+	    else {
+	        if(!isMovingHorizontally())
+	            game.player.stopX();
+	        if(!isMovingVertically())
+	            game.player.stopY();
+	        checkLeft(game);
+	        checkRight(game);
+	        checkUp(game);
+	        checkDown(game);
+	        checkShoot(game);
+	    }
 	}
 	
 }

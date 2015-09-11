@@ -62,7 +62,7 @@ public class GameObjectList {
         Iterator<GameObject> here = list.listIterator();
         while (here.hasNext()) {
             // if an enemy collides with player
-            if (here.next().collide(pl) && !pl.isImmune()) {
+            if (here.next().collide(pl) && !pl.isImmune() && pl.isAlive()) {
                 pl.kill();
                 return true;
             }
