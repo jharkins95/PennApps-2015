@@ -16,6 +16,10 @@ public class Controls {
 		switch (key) {
 		case 'p':
 		    game.setPaused(!game.isPaused());
+		    if (game.isPaused())
+		        game.pauseTimers();
+		    else
+		        game.unpauseTimers();
 		    break;
 		case 'o':
 		    game.setHasExited(true);

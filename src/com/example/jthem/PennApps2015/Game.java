@@ -1,13 +1,18 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.*;
+
+import java.awt.Color;
 import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 
 public class Game {
 	
     public static final double PLAYER_SPAWN_X = 400;
     public static final double PLAYER_SPAWN_Y = 100;
+
+    private static final Color PAUSE_OVERLAY = new Color(0, 0, 0, 200);
     
 	private boolean initiated;
 	private boolean paused;
@@ -43,59 +48,67 @@ public class Game {
 	}
 
 	public void loop(int speed) {
-		enemyTimer.setCurrentTime();
-		player.playerTimer.setCurrentTime();
+		enemyTimer.setCurrentTime(); // these don't seem necessary
+		player.playerTimer.setCurrentTime(); // these don't seem necessary
 		if (!this.initiated) {
 			this.init();
 		}
-		if (player.getLives() < 1) {
-			JOptionPane.showMessageDialog(null, "You are out of lives! Game over!",
-					"Game over!", JOptionPane.ERROR_MESSAGE);
-			this.setHasExited(true);
-		}
 		
-        Controls.checkControls(this);
+		Controls.checkControls(this);
         
-		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
+        if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
         }
-		if (this.paused) {
-			return;
+		
+		if (!paused) {
+    		if (player.getLives() < 1 && player.isDoneWithDeathAnim()) {
+    		    // not done with this check. could be better
+    			JOptionPane.showMessageDialog(null, "You are out of lives! Game over!",
+    					"Game over!", JOptionPane.ERROR_MESSAGE);
+    			this.setHasExited(true);
+    		}
+    		
+    		
+    		if (enemyTimer.cmpMarkerCurrent() >= 1000) {
+    			enemyList.add(new Enemy(400, 700, 0, 0, 30, this, player));
+    			enemyTimer.setMarker(enemyTimer.getTime());
+    		}
+    		
+    		player.checkVulnerability();
+    		player.updateCounters();
+    		
+    		player.move();
+    		playerBulletList.moveList();
+    		enemyBulletList.moveList();
+    		enemyList.moveList();
+    		
+    		playerBulletList.checkCollisions(enemyList);
+    		enemyBulletList.checkCollisions(player);
+    		enemyList.checkCollisions(player);
+    		
+    		Iterator<GameObject> iter = enemyList.getList().listIterator();
+    		while(iter.hasNext()) {
+    			Enemy enemy = (Enemy) iter.next();
+    			double epsilon = 10;
+    			if (player.getPosX() <= enemy.getPosX() + epsilon &&
+    				player.getPosX() >= enemy.getPosX() - epsilon &&
+    				player.getPosY() <= enemy.getPosY()) {
+    				enemy.shoot();
+    			}
+    		}
 		}
-		
-		if (enemyTimer.cmpMarkerCurrent() >= 1000) {
-			enemyList.add(new Enemy(400, 700, 0, 0, 30, this, player));
-			enemyTimer.setMarker(enemyTimer.getTime());
-		}
-		
-		player.checkVulnerability();
-		
-		canvas.clear();
-		player.move();
-		playerBulletList.moveList();
-		enemyBulletList.moveList();
-		enemyList.moveList();
-		
-		playerBulletList.checkCollisions(enemyList);
-		enemyBulletList.checkCollisions(player);
-		enemyList.checkCollisions(player);
-		
-		Iterator<GameObject> iter = enemyList.getList().listIterator();
-		while(iter.hasNext()) {
-			Enemy enemy = (Enemy) iter.next();
-			double epsilon = 10;
-			if (player.getPosX() <= enemy.getPosX() + epsilon &&
-				player.getPosX() >= enemy.getPosX() - epsilon &&
-				player.getPosY() <= enemy.getPosY()) {
-				enemy.shoot();
-			}
-		}
-		
+
+        canvas.clear();
 		playerBulletList.drawList();
 		enemyBulletList.drawList();
 		enemyList.drawList();
 		player.draw();
 
+		if (paused) {
+		    StdDraw.clear(PAUSE_OVERLAY);
+		    StdDraw.text(Canvas.MAX_X_RES/2, Canvas.MAX_X_RES/2, "PAUSED");
+		}
+		
 		canvas.animate(speed);
 		
 	}
@@ -110,6 +123,16 @@ public class Game {
 	
 	public boolean isPaused() {
 		return paused;
+	}
+	
+	public void pauseTimers() {
+	    enemyTimer.pause();
+	    player.playerTimer.pause();
+	}
+	
+	public void unpauseTimers() {
+	    enemyTimer.unpause();
+        player.playerTimer.unpause();
 	}
 	
 	public static void main(String[] args) {

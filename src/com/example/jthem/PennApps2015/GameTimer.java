@@ -4,6 +4,7 @@ public class GameTimer {
 	
 	private long currentTime;
 	private long marker;
+	private long pauseTime;
 	
 	public GameTimer() {
 		currentTime = 0;
@@ -13,6 +14,7 @@ public class GameTimer {
 	public GameTimer(long time) {
 		currentTime = time;
 		marker = 0;
+		pauseTime = 0;
 	}
 	
 	public long getTime() {
@@ -34,4 +36,13 @@ public class GameTimer {
 	public long cmpMarkerCurrent() {
 		return currentTime - marker;
 	}
+	
+	public void pause() {
+	    pauseTime = System.currentTimeMillis();
+	}
+	
+	public void unpause() {
+	    marker += System.currentTimeMillis() - pauseTime;
+	}
+	
 }

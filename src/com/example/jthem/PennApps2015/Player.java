@@ -2,7 +2,6 @@ package com.example.jthem.PennApps2015;
 
 import java.awt.Color;
 import edu.princeton.cs.introcs.*;
-import java.awt.Font;
 
 public class Player extends GameObject {
 
@@ -18,6 +17,8 @@ public class Player extends GameObject {
     private int lives;
     private int immuneAnimCounter;
     private int deathAnimCounter;
+    private boolean doneWithDeathAnim;
+    private float deathAnimColor;
     
     private Game game;
 	public GameTimer playerTimer;
@@ -30,6 +31,8 @@ public class Player extends GameObject {
         this.lives = 5;
         this.immuneAnimCounter = 0;
         this.deathAnimCounter = 0;
+        this.deathAnimColor = 0;
+        this.doneWithDeathAnim = true;
 		playerTimer = new GameTimer();
 		playerTimer.setCurrentTime();
 		playerTimer.setMarker(playerTimer.getTime());
@@ -88,28 +91,41 @@ public class Player extends GameObject {
         StdDraw.setPenColor(Color.GREEN);
         if (immune & alive) {
             if (immuneAnimCounter < IMMUNE_ANIM_COUNTER_ON) {
-                immuneAnimCounter++;
+                // do nothing
             }
             else if (immuneAnimCounter < IMMUNE_ANIM_COUNTER_OFF) {
                 StdDraw.filledCircle(posX, posY, r);
-                immuneAnimCounter++;
-            }
-            else {
-                immuneAnimCounter = 0;
             }
         }
         else {
-            if (!alive) {
-                float deathAnimColor = (float) deathAnimCounter/DEATH_ANIM_COUNTER_MAX;                
-                StdDraw.setPenColor(new Color(deathAnimColor,1.0f,deathAnimColor));
-                deathAnimCounter++;
-                if(deathAnimCounter > DEATH_ANIM_COUNTER_MAX) {
-                    deathAnimCounter = 0;
-                    reset();
-                }
+            if (!alive) {                
+                StdDraw.setPenColor(new Color(deathAnimColor,1.0f,deathAnimColor));       
             }
             StdDraw.filledCircle(posX, posY, r);
         }
+    }
+    
+    public void updateCounters() {
+        if (immune & alive) {
+            immuneAnimCounter++;
+            if (immuneAnimCounter >= IMMUNE_ANIM_COUNTER_OFF)
+                immuneAnimCounter = 0;
+        }
+        
+        if (!alive) {
+            doneWithDeathAnim = false;
+            deathAnimColor = (float) deathAnimCounter/DEATH_ANIM_COUNTER_MAX;
+            deathAnimCounter++;
+            if(deathAnimCounter >= DEATH_ANIM_COUNTER_MAX) {
+                deathAnimCounter = 0;
+                doneWithDeathAnim = true;
+                reset();
+            }
+        }
+    }
+    
+    public boolean isDoneWithDeathAnim() {
+        return doneWithDeathAnim;
     }
     
     public void kill() {
