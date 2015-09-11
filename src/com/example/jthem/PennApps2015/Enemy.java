@@ -9,7 +9,7 @@ public class Enemy extends GameObject {
 	protected int hp;
     private Player player;
     
-    static final double BASE_VEL = 2;
+    static final double BASE_VEL = 4;
     
     private Game game;
 	
@@ -20,8 +20,13 @@ public class Enemy extends GameObject {
 		this.player = player;
 	}
 	
+	private void seekAdv(Player player) {
+		velX = BASE_VEL * (player.posX - posX) / posX;
+		velY = BASE_VEL * (player.posY - posY) / posY;
+	}
+	
 	public void seek(Player player) {
-		if (this.posX > player.posX) {
+	  /*if (this.posX > player.posX) {
 			velX = -BASE_VEL;
 		} else if (this.posX < player.posX) {
 			velX = BASE_VEL;
@@ -35,7 +40,8 @@ public class Enemy extends GameObject {
 			velY = BASE_VEL;
 		} else {
 			velY = 0;
-		}
+		} */
+		seekAdv(player);
 	}
 	
 	@Override
