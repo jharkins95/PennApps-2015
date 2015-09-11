@@ -7,10 +7,17 @@ import java.awt.Font;
 public class Player extends GameObject {
 
     private static final double MOVE_INC = 5.0;
+    private static final int IMMUNE_ANIM_COUNTER_ON = 10;
+    private static final int IMMUNE_ANIM_COUNTER_OFF = 2*IMMUNE_ANIM_COUNTER_ON;
+    private static final int DEATH_ANIM_COUNTER_MAX = 150;
+    
+    
     private boolean alive;
     private boolean immune;
     private double borderR = r + 10.0;
     private int lives;
+    private int immuneAnimCounter;
+    private int deathAnimCounter;
     
     private Game game;
 	public GameTimer playerTimer;
@@ -21,6 +28,8 @@ public class Player extends GameObject {
         this.immune = true;
         this.alive = true;
         this.lives = 5;
+        this.immuneAnimCounter = 0;
+        this.deathAnimCounter = 0;
 		playerTimer = new GameTimer();
 		playerTimer.setCurrentTime();
 		playerTimer.setMarker(playerTimer.getTime());
@@ -77,21 +86,48 @@ public class Player extends GameObject {
     @Override
     public void draw() {
         StdDraw.setPenColor(Color.GREEN);
-        StdDraw.filledCircle(posX, posY, r);
-        if (immune) {
-        	StdDraw.setPenColor(Color.BLACK);
-        	StdDraw.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-        	StdDraw.text(posX, posY, "I");
+        if (immune & alive) {
+            if (immuneAnimCounter < IMMUNE_ANIM_COUNTER_ON) {
+                immuneAnimCounter++;
+            }
+            else if (immuneAnimCounter < IMMUNE_ANIM_COUNTER_OFF) {
+                StdDraw.filledCircle(posX, posY, r);
+                immuneAnimCounter++;
+            }
+            else {
+                immuneAnimCounter = 0;
+            }
+        }
+        else {
+            if (!alive) {
+                StdDraw.setPenColor(Color.PINK);
+                deathAnimCounter++;
+                if(deathAnimCounter > DEATH_ANIM_COUNTER_MAX) {
+                    deathAnimCounter = 0;
+                    reset();
+                }
+            }
+            StdDraw.filledCircle(posX, posY, r);
         }
     }
     
     public void kill() {
     	alive = false;
-    	immune = true;
     	lives--;
-   		posX = 400;
-       	posY = 100;
-       	playerTimer.setMarker(playerTimer.getTime());
+    }
+    
+    public void reset() {
+        alive = true;
+        immune = true;
+        posX = Game.PLAYER_SPAWN_X;
+        posY = Game.PLAYER_SPAWN_Y;
+        playerTimer.setMarker(playerTimer.getTime());
+    }
+    
+    public void checkVulnerability() {
+        if (immune && playerTimer.cmpMarkerCurrent() >= 3000) {
+            makeVulnerable();
+        }
     }
     
     public boolean isAlive() {
