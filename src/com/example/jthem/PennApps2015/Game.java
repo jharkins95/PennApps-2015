@@ -52,7 +52,6 @@ public class Game {
 	}
 
 	public void loop(int speed) {
-<<<<<<< HEAD
 		canvas.animate(speed);
 		enemyTimer.setCurrentTime();
 		player.playerTimer.setCurrentTime();
@@ -65,20 +64,17 @@ public class Game {
 					"Game over!", JOptionPane.ERROR_MESSAGE);
 			this.setHasExited(true);
 		}
-=======
 		enemyTimer.setCurrentTime(); // these don't seem necessary
 		player.playerTimer.setCurrentTime(); // these don't seem necessary
 		if (!this.initiated) {
 			this.init();
 		}
->>>>>>> origin/master
 		
 		Controls.checkControls(this);
         
         if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
         }
-<<<<<<< HEAD
 		
 		if (!started) {
 			menu.draw();
@@ -101,9 +97,7 @@ public class Game {
 		playerBulletList.moveList();
 		enemyBulletList.moveList();
 		enemyList.moveList();
-=======
->>>>>>> origin/master
-		
+
 		if (!paused) {
     		if (player.getLives() < 1 && player.isDoneWithDeathAnim()) {
     		    // not done with this check. could be better
@@ -146,10 +140,7 @@ public class Game {
 		playerBulletList.drawList();
 		enemyBulletList.drawList();
 		enemyList.drawList();
-<<<<<<< HEAD
 		player.draw();		
-=======
-		player.draw();
 
 		if (paused) {
 		    StdDraw.clear(PAUSE_OVERLAY);
@@ -157,8 +148,7 @@ public class Game {
 		}
 		
 		canvas.animate(speed);
-		
->>>>>>> origin/master
+
 	}
 	
 	public void setHasExited(boolean b) {
@@ -173,10 +163,9 @@ public class Game {
 		return paused;
 	}
 	
-<<<<<<< HEAD
 	public void start() {
 		started = true;
-=======
+	}
 	public void pauseTimers() {
 	    enemyTimer.pause();
 	    player.playerTimer.pause();
@@ -185,12 +174,11 @@ public class Game {
 	public void unpauseTimers() {
 	    enemyTimer.unpause();
         player.playerTimer.unpause();
->>>>>>> origin/master
 	}
 	
 	public static void main(String[] args) {
 		Game game = new Game();
-		int speed = 0;;
+		int speed = 0;
 		try {
 			speed = Integer.parseInt(args[0]);
 		} catch (IllegalArgumentException e) {
