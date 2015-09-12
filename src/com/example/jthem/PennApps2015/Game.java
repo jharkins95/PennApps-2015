@@ -1,13 +1,18 @@
 package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.*;
+
+import java.awt.Color;
 import java.util.Iterator;
+
 import javax.swing.JOptionPane;
 
 public class Game {
 	
     public static final double PLAYER_SPAWN_X = 400;
     public static final double PLAYER_SPAWN_Y = 100;
+
+    private static final Color PAUSE_OVERLAY = new Color(0, 0, 0, 200);
     
 	private boolean initiated;
 	private boolean paused;
@@ -47,6 +52,7 @@ public class Game {
 	}
 
 	public void loop(int speed) {
+<<<<<<< HEAD
 		canvas.animate(speed);
 		enemyTimer.setCurrentTime();
 		player.playerTimer.setCurrentTime();
@@ -59,12 +65,20 @@ public class Game {
 					"Game over!", JOptionPane.ERROR_MESSAGE);
 			this.setHasExited(true);
 		}
+=======
+		enemyTimer.setCurrentTime(); // these don't seem necessary
+		player.playerTimer.setCurrentTime(); // these don't seem necessary
+		if (!this.initiated) {
+			this.init();
+		}
+>>>>>>> origin/master
 		
-        Controls.checkControls(this);
+		Controls.checkControls(this);
         
-		if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
+        if (StdDraw.hasNextKeyTyped()) { // Has a key been pressed?
             Controls.readKey(this);
         }
+<<<<<<< HEAD
 		
 		if (!started) {
 			menu.draw();
@@ -87,26 +101,64 @@ public class Game {
 		playerBulletList.moveList();
 		enemyBulletList.moveList();
 		enemyList.moveList();
+=======
+>>>>>>> origin/master
 		
-		playerBulletList.checkCollisions(enemyList);
-		enemyBulletList.checkCollisions(player);
-		enemyList.checkCollisions(player);
-		
-		Iterator<GameObject> iter = enemyList.getList().listIterator();
-		while(iter.hasNext()) {
-			Enemy enemy = (Enemy) iter.next();
-			double epsilon = 10;
-			if (player.getPosX() <= enemy.getPosX() + epsilon &&
-				player.getPosX() >= enemy.getPosX() - epsilon &&
-				player.getPosY() <= enemy.getPosY()) {
-				enemy.shoot();
-			}
+		if (!paused) {
+    		if (player.getLives() < 1 && player.isDoneWithDeathAnim()) {
+    		    // not done with this check. could be better
+    			JOptionPane.showMessageDialog(null, "You are out of lives! Game over!",
+    					"Game over!", JOptionPane.ERROR_MESSAGE);
+    			this.setHasExited(true);
+    		}
+    		
+    		
+    		if (enemyTimer.cmpMarkerCurrent() >= 1000) {
+    			enemyList.add(new Enemy(400, 700, 0, 0, 30, this, player));
+    			enemyTimer.setMarker(enemyTimer.getTime());
+    		}
+    		
+    		player.checkVulnerability();
+    		player.updateCounters();
+    		
+    		player.move();
+    		playerBulletList.moveList();
+    		enemyBulletList.moveList();
+    		enemyList.moveList();
+    		
+    		playerBulletList.checkCollisions(enemyList);
+    		enemyBulletList.checkCollisions(player);
+    		enemyList.checkCollisions(player);
+    		
+    		Iterator<GameObject> iter = enemyList.getList().listIterator();
+    		while(iter.hasNext()) {
+    			Enemy enemy = (Enemy) iter.next();
+    			double epsilon = 10;
+    			if (player.getPosX() <= enemy.getPosX() + epsilon &&
+    				player.getPosX() >= enemy.getPosX() - epsilon &&
+    				player.getPosY() <= enemy.getPosY()) {
+    				enemy.shoot();
+    			}
+    		}
 		}
-		
+
+        canvas.clear();
 		playerBulletList.drawList();
 		enemyBulletList.drawList();
 		enemyList.drawList();
+<<<<<<< HEAD
 		player.draw();		
+=======
+		player.draw();
+
+		if (paused) {
+		    StdDraw.clear(PAUSE_OVERLAY);
+		    StdDraw.text(Canvas.MAX_X_RES/2, Canvas.MAX_X_RES/2, "PAUSED");
+		}
+		
+		canvas.animate(speed);
+		
+>>>>>>> origin/master
 	}
 	
 	public void setHasExited(boolean b) {
@@ -121,8 +173,19 @@ public class Game {
 		return paused;
 	}
 	
+<<<<<<< HEAD
 	public void start() {
 		started = true;
+=======
+	public void pauseTimers() {
+	    enemyTimer.pause();
+	    player.playerTimer.pause();
+	}
+	
+	public void unpauseTimers() {
+	    enemyTimer.unpause();
+        player.playerTimer.unpause();
+>>>>>>> origin/master
 	}
 	
 	public static void main(String[] args) {
