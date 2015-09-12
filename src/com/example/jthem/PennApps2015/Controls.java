@@ -2,6 +2,7 @@ package com.example.jthem.PennApps2015;
 
 import edu.princeton.cs.introcs.StdDraw;
 import java.awt.event.KeyEvent;
+import java.util.ListIterator;
 
 public class Controls {
     
@@ -12,6 +13,7 @@ public class Controls {
     private static boolean shootPressed;    
 
 	public static void readKey(Game game) {
+		ListIterator<MenuTextItem> textItemsIter = game.menu.getTextItemsIter();
 		char key = StdDraw.nextKeyTyped();
 		switch (key) {
 		case 'p':
@@ -20,6 +22,20 @@ public class Controls {
 		case 'o':
 		    game.setHasExited(true);
 		    break;
+		case 'w':
+			if (textItemsIter.hasPrevious()) {
+				game.menu.updateMenuCursor(textItemsIter.previous());
+			}
+			break;
+		case 's':
+			if (textItemsIter.hasNext()) {
+				game.menu.updateMenuCursor(textItemsIter.next());
+			}
+			break;
+		case 'd':
+			if (game.menu.getCurrentCursorItem().getTag() == MenuTextItem.Tag.SINGLE_PLAYER_GAME) {
+				game.start();
+			}
 		}
 	}
 

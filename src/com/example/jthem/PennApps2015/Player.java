@@ -2,7 +2,6 @@ package com.example.jthem.PennApps2015;
 
 import java.awt.Color;
 import edu.princeton.cs.introcs.*;
-import java.awt.Font;
 
 public class Player extends GameObject {
 
